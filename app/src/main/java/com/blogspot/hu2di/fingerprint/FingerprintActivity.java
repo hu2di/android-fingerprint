@@ -3,6 +3,7 @@ package com.blogspot.hu2di.fingerprint;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.security.keystore.KeyProperties;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -31,11 +33,16 @@ import javax.crypto.SecretKey;
 
 public class FingerprintActivity extends AppCompatActivity {
 
+    private KeyguardManager keyguardManager;
+    private FingerprintManager fingerprintManager;
+
     private KeyStore keyStore;
     // Variable used for storing the key in the Android Keystore container
     private static final String KEY_NAME = "Hu2Di";
     private Cipher cipher;
+
     private TextView textView;
+    private boolean isRegister = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +50,35 @@ public class FingerprintActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fingerprint);
 
         // Initializing both Android Keyguard Manager and Fingerprint Manager
-        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+        keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
+        initView();
+    }
 
+    private void initView() {
         textView = (TextView) findViewById(R.id.errorText);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isRegister) {
+                    callFingerprintSetting();
+                }
+            }
+        });
+    }
 
+    private void callFingerprintSetting() {
+        startActivity(new Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initFingerprint();
+    }
+
+    private void initFingerprint() {
         // Check whether the device has a Fingerprint sensor.
         if (!fingerprintManager.isHardwareDetected()) {
             /**
@@ -69,7 +98,9 @@ public class FingerprintActivity extends AppCompatActivity {
                 // Check whether at least one fingerprint is registered
                 if (!fingerprintManager.hasEnrolledFingerprints()) {
                     textView.setText("Register at least one fingerprint in Settings");
+                    isRegister = false;
                 } else {
+                    isRegister = true;
                     // Checks whether lock screen security is enabled or not
                     if (!keyguardManager.isKeyguardSecure()) {
                         textView.setText("Lock screen security not enabled in Settings");
@@ -120,7 +151,6 @@ public class FingerprintActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-
 
     @TargetApi(Build.VERSION_CODES.M)
     public boolean cipherInit() {
