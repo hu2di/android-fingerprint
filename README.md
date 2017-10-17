@@ -1,14 +1,23 @@
-# android-fingerprint
+### android-fingerprint
 Android Fingerprint API sample
 
-# Testing on an Emulator
+### Testing on an Emulator
 You could also test the app on an emulator:<br>
 > Install Android SDK Tools Revision 24.3, if you have not done so.<br>
 > Enroll a new fingerprint in the emulator by going to Settings ⇒ Security ⇒ Fingerprint, then follow the enrollment instructions.<br>
 > Use an emulator to emulate fingerprint touch events with the following command. Use the same command to emulate fingerprint touch events on the lockscreen or in your app.<br>
 adb -e emu finger touch <finger_id>
 
-# About
+### PayPal
+ - [**Donate 5 $**](https://www.paypal.me/hungdh/5usd): Thank's for creating this project, here's a coffee (or some beer) for you!
+ - [**Donate 10 $**](https://www.paypal.me/hungdh/10usd): Wow, I am stunned. Let me take you to the movies!
+ - [**Donate 15 $**](https://www.paypal.me/hungdh/15usd): I really appreciate your work, let's grab some lunch! 
+ - [**Donate 25 $**](https://www.paypal.me/hungdh/25usd): That's some awesome stuff you did right there, dinner is on me!
+ - [**Donate 50 $**](https://www.paypal.me/hungdh/50usd): I really really want to support this project, great job!
+ - [**Donate 100 $**](https://www.paypal.me/hungdh/100usd): You are the man! This project saved me hours (if not days) of struggle and hard work, simply awesome!
+ - Of course, you can also [**choose what you want to donate**](https://www.paypal.me/hungdh), all donations are awesome!
+ 
+### About
 Created by HuyHung Dinh<br>
 GitHub: https://github.com/hu2di<br>
 Email: hebitaxy@gmail.com
